@@ -1,73 +1,87 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class showcard : MonoBehaviour, ICardboardGazeResponder {
+public class showcard : MonoBehaviour, ICardboardGazeResponder
+{
 
-	void Start() {
-		SetGazedAt(false);
-	}
+    void Start()
+    {
+        SetGazedAt(false);
+    }
 
-	void LateUpdate() {
-		Cardboard.SDK.UpdateState();
-		if (Cardboard.SDK.BackButtonPressed) {
-			Application.Quit();
-		}
-	}
+    void LateUpdate()
+    {
+        Cardboard.SDK.UpdateState();
+        if (Cardboard.SDK.BackButtonPressed)
+        {
+            Application.Quit();
+        }
+    }
 
-	public void SetGazedAt(bool gazedAt) {
-		GetComponent<Renderer>().material.color = gazedAt ? Color.grey : Color.white;
-	}
+    public void SetGazedAt(bool gazedAt)
+    {
+        //GetComponent<Renderer>().material.color = gazedAt ? Color.grey : Color.white;
+        Debug.LogWarning("SetGazedAt");
+    }
 
 
-	public void ToggleVRMode() {
-		Cardboard.SDK.VRModeEnabled = !Cardboard.SDK.VRModeEnabled;
-	}
+    public void ToggleVRMode()
+    {
+        Cardboard.SDK.VRModeEnabled = !Cardboard.SDK.VRModeEnabled;
+    }
 
-	public void ToggleDistortionCorrection() {
-		switch(Cardboard.SDK.DistortionCorrection) {
-		case Cardboard.DistortionCorrectionMethod.Unity:
-			Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Native;
-			break;
-		case Cardboard.DistortionCorrectionMethod.Native:
-			Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.None;
-			break;
-		case Cardboard.DistortionCorrectionMethod.None:
-		default:
-			Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Unity;
-			break;
-		}
-	}
+    public void ToggleDistortionCorrection()
+    {
+        switch (Cardboard.SDK.DistortionCorrection)
+        {
+            case Cardboard.DistortionCorrectionMethod.Unity:
+                Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Native;
+                break;
+            case Cardboard.DistortionCorrectionMethod.Native:
+                Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.None;
+                break;
+            case Cardboard.DistortionCorrectionMethod.None:
+            default:
+                Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Unity;
+                break;
+        }
+    }
 
-	public void ToggleDirectRender() {
-		Cardboard.Controller.directRender = !Cardboard.Controller.directRender;
-	}
+    public void ToggleDirectRender()
+    {
+        Cardboard.Controller.directRender = !Cardboard.Controller.directRender;
+    }
 
-	public void Turn() {
-		if(GetComponent<MemoryCard>() != null){
-			GetComponent<MemoryCard>().Show();
-		}
+    public void Turn()
+    {
+        if (GetComponent<MemoryCard>() != null)
+        {
+            GetComponent<MemoryCard>().Show();
+        }
 
-	}
+    }
 
-	#region ICardboardGazeResponder implementation
+    #region ICardboardGazeResponder implementation
 
-	/// Called when the user is looking on a GameObject with this script,
-	/// as long as it is set to an appropriate layer (see CardboardGaze).
-	public void OnGazeEnter() {
-		SetGazedAt(true);
-	}
+    /// Called when the user is looking on a GameObject with this script,
+    /// as long as it is set to an appropriate layer (see CardboardGaze).
+    public void OnGazeEnter()
+    {
+        SetGazedAt(true);
+    }
 
-	/// Called when the user stops looking on the GameObject, after OnGazeEnter
-	/// was already called.
-	public void OnGazeExit() {
-		SetGazedAt(false);
-	}
+    /// Called when the user stops looking on the GameObject, after OnGazeEnter
+    /// was already called.
+    public void OnGazeExit()
+    {
+        SetGazedAt(false);
+    }
 
-	// Called when the Cardboard trigger is used, between OnGazeEnter
-	/// and OnGazeExit.
-	public void OnGazeTrigger() {
-		Turn();
-	}
+    // Called when the Cardboard trigger is used, between OnGazeEnter
+    /// and OnGazeExit.
+    public void OnGazeTrigger()
+    {
+        Turn();
+    }
 
-	#endregion
+    #endregion
 }

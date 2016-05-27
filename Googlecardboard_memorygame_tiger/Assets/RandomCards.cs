@@ -1,52 +1,62 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class RandomCards : MonoBehaviour {
+public class RandomCards : MonoBehaviour
+{
+    private List<int> uniqueNumbers;
 
-	public int nrOfCards;
-	public int numberOfPairs;
-	private List<int> uniqueNumbers;
-	public List<int> cardList;
-	public Texture[] cardTex;
+    public Material skinAtlasMaterial;
+    public Material backfaceMaterial;
 
-	void Awake (){
-		nrOfCards = this.transform.childCount;
-		numberOfPairs = nrOfCards / 2;
+    public Mesh[] cardMeshes;
 
-		uniqueNumbers = new List<int>();
-		cardList = new List<int>();
-		GenerateRandomList ();
-	}
-	void Start(){
-		
-	}
+    [HideInInspector]
+    public MemoryCard[] cardsInstances;
 
-	public void GenerateRandomList()
+    void Awake()
+    {
+        cardsInstances = GetComponentsInChildren<MemoryCard>();
 
-	{
-		//first card
-		for(int i = 0; i < numberOfPairs; i++)
-		{
-			uniqueNumbers.Add(i);
-		}
-		for(int i = 0; i< numberOfPairs; i ++)
-		{
-			int ranNum = uniqueNumbers[Random.Range(0,uniqueNumbers.Count)];
-			cardList.Add(ranNum);
-			uniqueNumbers.Remove (ranNum);
-		} 
-			
-		//second maching card
-		for(int i = 0; i < numberOfPairs; i++)
-		{
-			uniqueNumbers.Add(i);
-		}
-		for(int i = 0; i< numberOfPairs; i ++)
-		{
-			int ranNum = uniqueNumbers[Random.Range(0,uniqueNumbers.Count)];
-			cardList.Add(ranNum);
-			uniqueNumbers.Remove (ranNum);
-		}
-	}
+        uniqueNumbers = new List<int>();
+
+
+        GenerateRandomList();
+    }
+
+    public void GenerateRandomList()
+    {
+        int numberOfPairs = transform.childCount / 2;
+        List<int> cardList = new List<int>();
+
+        //first card
+        for (int i = 0; i < numberOfPairs; i++)
+        {
+            uniqueNumbers.Add(i);
+        }
+        for (int i = 0; i < numberOfPairs; i++)
+        {
+            int ranNum = uniqueNumbers[Random.Range(0, uniqueNumbers.Count)];
+            cardList.Add(ranNum);
+            uniqueNumbers.Remove(ranNum);
+        }
+
+        //second maching card
+        for (int i = 0; i < numberOfPairs; i++)
+        {
+            uniqueNumbers.Add(i);
+        }
+        for (int i = 0; i < numberOfPairs; i++)
+        {
+            int ranNum = uniqueNumbers[Random.Range(0, uniqueNumbers.Count)];
+            cardList.Add(ranNum);
+            uniqueNumbers.Remove(ranNum);
+        }
+
+        for (int i = 0; i < cardsInstances.Length; i++)
+        {
+            cardsInstances[i].cardnumber = cardList[i];
+            cardsInstances[i].SetCardMesh(cardMeshes[i]);
+            cardsInstances[i].SetCardFaceMaterial(skinAtlasMaterial);
+        }
+    }
 }
