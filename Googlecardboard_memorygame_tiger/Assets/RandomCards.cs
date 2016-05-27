@@ -1,11 +1,21 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+public class MeshContainer
+{
+    public int index = 0;
+
+    public Mesh defaultMesh;
+    public Mesh selectedMesh;
+}
+
 public class RandomCards : MonoBehaviour
 {
     public Texture2D[] faceTexturesPack;
 
     public Mesh[] cardMeshes;
+    private Dictionary<int, MeshContainer> meshPool = new Dictionary<int, MeshContainer>();
+
 
     [HideInInspector]
     public MemoryCard[] cardsInstances;
@@ -17,7 +27,7 @@ public class RandomCards : MonoBehaviour
     private int ATLAS_TEX_COUNT = 8;
     private int ATLAS_TEX_SIZE = 256;
 
-    void Awake()
+    private void Awake()
     {
         cardsInstances = GetComponentsInChildren<MemoryCard>();
 
@@ -37,11 +47,14 @@ public class RandomCards : MonoBehaviour
 
         skinAtlasMaterial = new Material(Shader.Find("Unlit/Texture"));
         skinAtlasMaterial.mainTexture = atlasTexture;
+    }
 
+    private void Start()
+    {
         GenerateRandomList();
     }
 
-    public void GenerateRandomList()
+    private void GenerateRandomList()
     {
         int numberOfPairs = transform.childCount / 2;
 
@@ -72,10 +85,36 @@ public class RandomCards : MonoBehaviour
             uniqueNumbers.Remove(ranNum);
         }
 
+
+        // generate colors
+        int lenght = cardMeshes[0].vertexCount;
+
+        Color32[] defaultColorsBuffer = new Color32[lenght];
+        Color32[] selectedColorsBuffer = new Color32[lenght];
+
+        for (int i = 0; i < lenght; i++)
+        {
+            defaultColorsBuffer[i] = Color.white;
+            selectedColorsBuffer[i] = Color.grey;
+        }
+
+
         for (int i = 0; i < cardsInstances.Length; i++)
         {
+            if (!meshPool.ContainsKey(cardList[i]))
+            {
+                MeshContainer mContainer = new MeshContainer();
+                mContainer.defaultMesh = Instantiate(cardMeshes[cardList[i]]);
+                mContainer.selectedMesh = Instantiate(cardMeshes[cardList[i]]);
+
+                mContainer.defaultMesh.colors32 = defaultColorsBuffer;
+                mContainer.selectedMesh.colors32 = selectedColorsBuffer;
+
+                meshPool.Add(cardList[i], mContainer);
+            }
+
             cardsInstances[i].cardnumber = cardList[i];
-            cardsInstances[i].SetCardMesh(cardMeshes[cardList[i]]);
+            cardsInstances[i].SetCardMesh(meshPool[cardList[i]]);
             cardsInstances[i].SetCardFaceMaterial(skinAtlasMaterial);
         }
     }

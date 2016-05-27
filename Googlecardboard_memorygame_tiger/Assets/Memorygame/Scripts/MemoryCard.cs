@@ -1,10 +1,13 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class MemoryCard : MonoBehaviour
+public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public int CardIndex;
     public int cardnumber;
+
+    public Action<MemoryCard> onSelect = (MemoryCard card) => { };
 
     private bool selected = false;
 
@@ -12,7 +15,8 @@ public class MemoryCard : MonoBehaviour
     private Animation myAnimation;
     private MeshFilter myFilter;
 
-    public Action<MemoryCard> onSelect = (MemoryCard card) => { };
+    private MeshContainer meshContainer;
+
 
     private void Awake()
     {
@@ -37,9 +41,10 @@ public class MemoryCard : MonoBehaviour
         myRenderer.sharedMaterials = materialsList;
     }
 
-    public void SetCardMesh(Mesh mesh)
+    public void SetCardMesh(MeshContainer mContainer)
     {
-        myFilter.sharedMesh = mesh;
+        meshContainer = mContainer;
+        myFilter.sharedMesh = mContainer.defaultMesh;
     }
 
     public void Show()
@@ -54,7 +59,6 @@ public class MemoryCard : MonoBehaviour
 
     public void Hide()
     {
-
         myAnimation.Play("Flip_hide");
         selected = false;
     }
@@ -69,4 +73,47 @@ public class MemoryCard : MonoBehaviour
     {
         onSelect(this);
     }
+
+    public void SetGazedAt(bool gazedAt)
+    {
+        myFilter.sharedMesh = gazedAt ? meshContainer.selectedMesh : meshContainer.defaultMesh;
+    }
+
+    #region ICardboardGazeResponder implementation
+
+    void ICardboardGazeResponder.OnGazeEnter()
+    {
+        SetGazedAt(true);
+    }
+
+    void ICardboardGazeResponder.OnGazeExit()
+    {
+        SetGazedAt(false);
+    }
+
+    void ICardboardGazeResponder.OnGazeTrigger()
+    {
+        Show();
+    }
+
+    #endregion
+
+    #region Pointer interfaces implementation
+
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+    {
+        SetGazedAt(true);
+    }
+
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+    {
+        SetGazedAt(false);
+    }
+
+    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+    {
+        Show();
+    }
+
+    #endregion
 }

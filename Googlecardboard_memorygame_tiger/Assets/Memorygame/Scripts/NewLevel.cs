@@ -1,82 +1,64 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class NewLevel : MonoBehaviour, ICardboardGazeResponder {
+public class NewLevel : MonoBehaviour, ICardboardGazeResponder, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+{
+    public string levelToLoad;
 
-	public string levelToLoad;
+    void Start()
+    {
+        SetGazedAt(false);
+    }
 
-		void Start() {
-			SetGazedAt(false);
-		}
+    public void SetGazedAt(bool gazedAt)
+    {
+        GetComponent<Text>().color = gazedAt ? Color.white : Color.green;
+    }
 
-		void LateUpdate() {
-			Cardboard.SDK.UpdateState();
-			if (Cardboard.SDK.BackButtonPressed) {
-				Application.Quit();
-			}
-		}
-
-		public void SetGazedAt(bool gazedAt) {
-		GetComponent<Text>().color = gazedAt ? Color.white : Color.green;
-		}
+    public void NextLevel()
+    {
+        SceneManager.LoadScene(levelToLoad);
+    }
 
 
-		public void ToggleVRMode() {
-			Cardboard.SDK.VRModeEnabled = !Cardboard.SDK.VRModeEnabled;
-		}
+    #region ICardboardGazeResponder implementation
 
-		public void ToggleDistortionCorrection() {
-			switch(Cardboard.SDK.DistortionCorrection) {
-			case Cardboard.DistortionCorrectionMethod.Unity:
-				Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Native;
-				break;
-			case Cardboard.DistortionCorrectionMethod.Native:
-				Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.None;
-				break;
-			case Cardboard.DistortionCorrectionMethod.None:
-			default:
-				Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Unity;
-				break;
-			}
-		}
+    void ICardboardGazeResponder.OnGazeEnter()
+    {
+        SetGazedAt(true);
+    }
 
-		public void ToggleDirectRender() {
-			Cardboard.Controller.directRender = !Cardboard.Controller.directRender;
-		}
+    void ICardboardGazeResponder.OnGazeExit()
+    {
+        SetGazedAt(false);
+    }
 
-		public void NextLevel (){
-		SceneManager.LoadScene (levelToLoad);
-		}
+    void ICardboardGazeResponder.OnGazeTrigger()
+    {
+        NextLevel();
+    }
 
-		/*public void Turn() {
-			if(GetComponent<MemoryCard>() != null){
-				GetComponent<MemoryCard>().Show();
-			}
+    #endregion
 
-		}*/
+    #region Pointer interfaces implementation
 
-		#region ICardboardGazeResponder implementation
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+    {
+        SetGazedAt(true);
+    }
 
-		/// Called when the user is looking on a GameObject with this script,
-		/// as long as it is set to an appropriate layer (see CardboardGaze).
-		public void OnGazeEnter() {
-			SetGazedAt(true);
-		}
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+    {
+        SetGazedAt(false);
+    }
 
-		/// Called when the user stops looking on the GameObject, after OnGazeEnter
-		/// was already called.
-		public void OnGazeExit() {
-			SetGazedAt(false);
-		}
+    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+    {
+        NextLevel();
+    }
 
-		// Called when the Cardboard trigger is used, between OnGazeEnter
-		/// and OnGazeExit.
-		public void OnGazeTrigger() {
-			NextLevel ();
-		}
+    #endregion
+}
 
-		#endregion
-	}
-	

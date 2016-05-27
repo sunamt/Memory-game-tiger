@@ -8,20 +8,23 @@ public class Logic : MonoBehaviour
     private int setsofcards;
     private int nroftries = 0;
     public Text wintext;
+
     private RandomCards randomC;
     private RevealSky revSky;
-    private GameObject nextL;
+    private NewLevel nextL;
 
-    void Start()
+    private void Awake()
+    {
+        randomC = FindObjectOfType<RandomCards>();
+        revSky = FindObjectOfType<RevealSky>();
+        nextL = FindObjectOfType<NewLevel>();
+    }
+
+    private void Start()
     {
         wintext.text = "";
-        randomC = GameObject.Find("CardHolder").GetComponent<RandomCards>();
-        revSky = GameObject.Find("ChickenLitleSphere").GetComponent<RevealSky>();
-        nextL = GameObject.Find("NextLevelButton");
-        nextL.SetActive(false);
-
+        nextL.gameObject.SetActive(false);
         setsofcards = transform.childCount;
-
 
         foreach (MemoryCard card in randomC.cardsInstances)
             card.onSelect += CheckCards;
@@ -64,6 +67,48 @@ public class Logic : MonoBehaviour
     void GameEnd()
     {
         wintext.text = "Du vandt i " + nroftries + " Træk";
-        nextL.SetActive(true);
+        nextL.gameObject.SetActive(true);
     }
+
+
+    #region utils
+
+    public void ToggleVRMode()
+    {
+        Cardboard.SDK.VRModeEnabled = !Cardboard.SDK.VRModeEnabled;
+    }
+
+
+    public void ToggleDirectRender()
+    {
+        Cardboard.Controller.directRender = !Cardboard.Controller.directRender;
+    }
+
+    public void ToggleDistortionCorrection()
+    {
+        switch (Cardboard.SDK.DistortionCorrection)
+        {
+            case Cardboard.DistortionCorrectionMethod.Unity:
+                Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Native;
+                break;
+            case Cardboard.DistortionCorrectionMethod.Native:
+                Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.None;
+                break;
+            case Cardboard.DistortionCorrectionMethod.None:
+            default:
+                Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Unity;
+                break;
+        }
+    }
+
+    void LateUpdate()
+    {
+        Cardboard.SDK.UpdateState();
+        if (Cardboard.SDK.BackButtonPressed)
+        {
+            Application.Quit();
+        }
+    }
+
+    #endregion
 }

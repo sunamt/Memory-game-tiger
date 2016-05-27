@@ -21,7 +21,6 @@ public class RevealSky : MonoBehaviour
 
     public void RunHide()
     {
-        Debug.Log("check");
         for (amount = 0; amount < clearSkyNbr; amount++)
             Hide();
     }
@@ -36,7 +35,7 @@ public class RevealSky : MonoBehaviour
             {
                 if (i == itemId)
                 {
-                    itemsForRandomHide[i].gameObject.active = false;                    // hide the hexagon
+                    itemsForRandomHide[i].gameObject.SetActive(false);                    // hide the hexagon
                     itemsForRandomHide.Remove(itemsForRandomHide[i].gameObject);    //removes from list
                 }
             }
