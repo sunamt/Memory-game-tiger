@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{9CDA6F5D-D6C4-F0E9-75EE-AAAB5A56EE2B}") = "Googlecardboard_memorygame", "Assembly-CSharp.csproj", "{1E56FEED-3DF6-4ABF-9B00-9FC002B2FBBF}"
+EndProject
+Project("{9CDA6F5D-D6C4-F0E9-75EE-AAAB5A56EE2B}") = "Googlecardboard_memorygame", "Assembly-CSharp-Editor.csproj", "{6B6774B9-5DB6-52F5-0500-8F0D7DC48211}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E56FEED-3DF6-4ABF-9B00-9FC002B2FBBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E56FEED-3DF6-4ABF-9B00-9FC002B2FBBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E56FEED-3DF6-4ABF-9B00-9FC002B2FBBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E56FEED-3DF6-4ABF-9B00-9FC002B2FBBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B6774B9-5DB6-52F5-0500-8F0D7DC48211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B6774B9-5DB6-52F5-0500-8F0D7DC48211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B6774B9-5DB6-52F5-0500-8F0D7DC48211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B6774B9-5DB6-52F5-0500-8F0D7DC48211}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

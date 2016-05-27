@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{E0A01F7A-3A02-A9DE-1F88-FFB0ADC6D498}") = "Googlecardboard_demo", "Assembly-CSharp.csproj", "{11FF6BF9-6AE8-F990-D8C3-0876343B81BC}"
+EndProject
+Project("{E0A01F7A-3A02-A9DE-1F88-FFB0ADC6D498}") = "Googlecardboard_demo", "Assembly-CSharp-Editor.csproj", "{D6918FD2-1FA0-A8F8-0E92-46306C5F18F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11FF6BF9-6AE8-F990-D8C3-0876343B81BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11FF6BF9-6AE8-F990-D8C3-0876343B81BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11FF6BF9-6AE8-F990-D8C3-0876343B81BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11FF6BF9-6AE8-F990-D8C3-0876343B81BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6918FD2-1FA0-A8F8-0E92-46306C5F18F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6918FD2-1FA0-A8F8-0E92-46306C5F18F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6918FD2-1FA0-A8F8-0E92-46306C5F18F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6918FD2-1FA0-A8F8-0E92-46306C5F18F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
