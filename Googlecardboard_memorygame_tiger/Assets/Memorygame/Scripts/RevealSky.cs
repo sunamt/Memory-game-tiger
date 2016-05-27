@@ -1,22 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RevealSky : MonoBehaviour
 {
-
-    public List<GameObject> itemsForRandomHide;
-    private int amount = 0;
     public int clearSkyNbr = 0;
 
+    private List<Transform> itemsForRandomHide;
+    private int amount = 0;
 
-    void Start()
+    private void Awake()
     {
-        itemsForRandomHide = new List<GameObject>();                                //building list of objects
-
-        foreach (Transform child in transform)
-        {
-            itemsForRandomHide.Add(child.gameObject);                           //adding child to list
-        }
+        itemsForRandomHide = GetComponentsInChildren<Transform>().ToList();                                //building list of objects
     }
 
     public void RunHide()
@@ -31,14 +26,8 @@ public class RevealSky : MonoBehaviour
         {
             int itemId = new System.Random().Next(itemsForRandomHide.Count);        //setting itemId as a random pick from list
 
-            for (int i = 0; i < itemsForRandomHide.Count; i++)
-            {
-                if (i == itemId)
-                {
-                    itemsForRandomHide[i].gameObject.SetActive(false);                    // hide the hexagon
-                    itemsForRandomHide.Remove(itemsForRandomHide[i].gameObject);    //removes from list
-                }
-            }
+            itemsForRandomHide[itemId].gameObject.SetActive(false);                    // hide the hexagon
+            itemsForRandomHide.RemoveAt(itemId);    //removes from list
         }
     }
 }
