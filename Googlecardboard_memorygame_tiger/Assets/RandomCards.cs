@@ -3,47 +3,31 @@ using UnityEngine;
 
 public class RandomCards : MonoBehaviour
 {
-
-    public int nrOfCards;
-    public int numberOfPairs;
     private List<int> uniqueNumbers;
-    public List<int> cardList;
-    public Texture[] cardTex;
 
     public Material skinAtlasMaterial;
     public Material backfaceMaterial;
 
     public Mesh[] cardMeshes;
 
-    public Material cardMaterialSource;
-    private Material[] cardMaterialsPool;
-
-    private MemoryCard[] cardsInstances;
+    [HideInInspector]
+    public MemoryCard[] cardsInstances;
 
     void Awake()
     {
-        cardMaterialsPool = new Material[cardTex.Length];
-        for (int i = 0; i < cardTex.Length; i++)
-            cardMaterialsPool[i] = new Material(cardMaterialSource);
-
         cardsInstances = GetComponentsInChildren<MemoryCard>();
 
-
-        nrOfCards = this.transform.childCount;
-        numberOfPairs = nrOfCards / 2;
-
         uniqueNumbers = new List<int>();
-        cardList = new List<int>();
+
 
         GenerateRandomList();
-    }
-    void Start()
-    {
-
     }
 
     public void GenerateRandomList()
     {
+        int numberOfPairs = transform.childCount / 2;
+        List<int> cardList = new List<int>();
+
         //first card
         for (int i = 0; i < numberOfPairs; i++)
         {
@@ -66,6 +50,13 @@ public class RandomCards : MonoBehaviour
             int ranNum = uniqueNumbers[Random.Range(0, uniqueNumbers.Count)];
             cardList.Add(ranNum);
             uniqueNumbers.Remove(ranNum);
+        }
+
+        for (int i = 0; i < cardsInstances.Length; i++)
+        {
+            cardsInstances[i].cardnumber = cardList[i];
+            cardsInstances[i].SetCardMesh(cardMeshes[i]);
+            cardsInstances[i].SetCardFaceMaterial(skinAtlasMaterial);
         }
     }
 }

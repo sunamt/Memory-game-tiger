@@ -1,29 +1,24 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
 
 public class MemoryCard : MonoBehaviour
 {
-
     public int CardIndex;
-    private Logic logic;
+    public int cardnumber;
+
     private bool selected = false;
 
     private MeshRenderer myRenderer;
     private Animation myAnimation;
     private MeshFilter myFilter;
 
+    public Action<MemoryCard> onSelect = (MemoryCard card) => { };
+
     private void Awake()
     {
         myAnimation = GetComponent<Animation>();
         myRenderer = GetComponent<MeshRenderer>();
         myFilter = GetComponent<MeshFilter>();
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-
-        logic = GameObject.Find("GameController").GetComponent<Logic>();
     }
 
     public void SetCardFaceMaterial(Material material)
@@ -53,7 +48,7 @@ public class MemoryCard : MonoBehaviour
         {
             selected = true;
             myAnimation.Play("Flip_show");
-            StartCoroutine(Wait());
+            Invoke("SelectCard", 2f);
         }
     }
 
@@ -70,9 +65,8 @@ public class MemoryCard : MonoBehaviour
         Destroy(gameObject, 0.5f);
     }
 
-    IEnumerator Wait()
+    private void SelectCard()
     {
-        yield return new WaitForSeconds(2);
-        logic.CheckCards(this);
+        onSelect(this);
     }
 }
