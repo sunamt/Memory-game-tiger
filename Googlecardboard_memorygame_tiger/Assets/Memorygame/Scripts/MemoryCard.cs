@@ -1,59 +1,78 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-public class MemoryCard : MonoBehaviour {
+public class MemoryCard : MonoBehaviour
+{
 
-	public int CardIndex;
-	public int cardnumber;
-	private Logic logic;
-	private RandomCards randomC;
-	private bool selected = false;
-	Texture mainT;
-	
-	// Use this for initialization
-	void Start () {
-		
-		logic = GameObject.Find("GameController").GetComponent<Logic>();
-		randomC = GameObject.Find("CardHolder").GetComponent<RandomCards>();
-		cardnumber = randomC.cardList [CardIndex];
-		SetPicture ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public int CardIndex;
+    private Logic logic;
+    private bool selected = false;
 
-	public void SetPicture(){
-		mainT = randomC.cardTex[cardnumber];
-		GetComponent<Renderer>().materials[1].mainTexture = mainT;
-	}
-	
-	public void Show(){
-		if(!selected){
-			selected = true;
-			GetComponent<Animation>().Play("Flip_show");
-			StartCoroutine(Wait());
+    private MeshRenderer myRenderer;
+    private Animation myAnimation;
+    private MeshFilter myFilter;
 
-		}
-	}
+    private void Awake()
+    {
+        myAnimation = GetComponent<Animation>();
+        myRenderer = GetComponent<MeshRenderer>();
+        myFilter = GetComponent<MeshFilter>();
+    }
 
-	public void Hide(){
-		
-		GetComponent<Animation>().Play("Flip_hide");
-		selected = false;
-	}
-	
-	public void RemoveCard(){
-		GetComponent<Animation>().Play("Flip_hide");
-		StartCoroutine(Remove());
-	}
-	IEnumerator Remove(){
-		yield return new WaitForSeconds (0.5f);
-		Destroy(gameObject);
-	}
-	IEnumerator Wait(){
-		yield return new WaitForSeconds (2);
-		logic.CheckCards(this);
-	}
+    // Use this for initialization
+    void Start()
+    {
+
+        logic = GameObject.Find("GameController").GetComponent<Logic>();
+    }
+
+    public void SetCardFaceMaterial(Material material)
+    {
+        Material[] materialsList = myRenderer.sharedMaterials;
+        materialsList[1] = material;
+
+        myRenderer.sharedMaterials = materialsList;
+    }
+
+    public void SetCardBackfaceMaterial(Material material)
+    {
+        Material[] materialsList = myRenderer.sharedMaterials;
+        materialsList[0] = material;
+
+        myRenderer.sharedMaterials = materialsList;
+    }
+
+    public void SetCardMesh(Mesh mesh)
+    {
+        myFilter.sharedMesh = mesh;
+    }
+
+    public void Show()
+    {
+        if (!selected)
+        {
+            selected = true;
+            myAnimation.Play("Flip_show");
+            StartCoroutine(Wait());
+        }
+    }
+
+    public void Hide()
+    {
+
+        myAnimation.Play("Flip_hide");
+        selected = false;
+    }
+
+    public void RemoveCard()
+    {
+        myAnimation.Play("Flip_hide");
+        Destroy(gameObject, 0.5f);
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(2);
+        logic.CheckCards(this);
+    }
 }
