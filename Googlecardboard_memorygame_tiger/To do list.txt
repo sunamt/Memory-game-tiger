@@ -1,0 +1,23 @@
+--platform check--
+build ios version+
+see how it performs on ios
+
+--Game navigation--
+make splashscreen
+make start scene
+
+
+--Game internal stuff--
+
+level design:
+Building all levels ofcourse
+sounds?
+ui
+different flips (having several kinds of flips)
+Themes? corresponding with 360 img.
+
+Graphics:
+Correct textures
+particles (small blinking dots)
+
+particle effect when cards dissapear
