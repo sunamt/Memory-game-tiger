@@ -5,7 +5,7 @@ public class Logic : MonoBehaviour
 {
 
     private MemoryCard[] cards = new MemoryCard[2];
-    private int setsofcards;
+	public static int setsofcards;
     private int nroftries = 0;
     public Text wintext;
 
@@ -56,8 +56,12 @@ public class Logic : MonoBehaviour
         revSky.RunHide();
 
         setsofcards--;
-        if (setsofcards == 0)
-            GameEnd();
+		if (setsofcards == 0) {
+			GameEnd ();
+		} else {
+			AudioController.Instance.PlayPairSuccesSound ();
+		}
+
     }
     void CardsNotMatching()
     {
@@ -66,7 +70,8 @@ public class Logic : MonoBehaviour
     }
     void GameEnd()
     {
-        wintext.text = "Du vandt i " + nroftries + " Træk";
+		AudioController.Instance.PlayWinningSound ();
+		wintext.text = "You won in " + nroftries + " moves";
         nextL.gameObject.SetActive(true);
     }
 

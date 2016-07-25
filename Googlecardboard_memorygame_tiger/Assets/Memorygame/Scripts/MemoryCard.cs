@@ -53,6 +53,7 @@ public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterH
         {
             selected = true;
             myAnimation.Play("Flip_show");
+			AudioController.Instance.PlayCardFlipSound ();
             Invoke("SelectCard", 2f);
         }
     }

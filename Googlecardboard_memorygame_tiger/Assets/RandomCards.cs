@@ -51,13 +51,14 @@ public class RandomCards : MonoBehaviour
 
     private void Start()
     {
-        GenerateRandomList();
+		GenerateRandomList();
     }
 
     private void GenerateRandomList()
     {
         int numberOfPairs = transform.childCount / 2;
 
+		Logic.setsofcards = numberOfPairs;
         List<int> cardList = new List<int>();
         List<int> uniqueNumbers = new List<int>();
 
@@ -97,8 +98,7 @@ public class RandomCards : MonoBehaviour
             defaultColorsBuffer[i] = Color.white;
             selectedColorsBuffer[i] = Color.grey;
         }
-
-
+			
         for (int i = 0; i < cardsInstances.Length; i++)
         {
             if (!meshPool.ContainsKey(cardList[i]))
