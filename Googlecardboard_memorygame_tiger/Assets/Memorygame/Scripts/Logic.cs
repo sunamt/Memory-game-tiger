@@ -80,11 +80,11 @@ public class Logic : MonoBehaviour
     void GameEnd()
     {
 		AudioController.Instance.PlayWinningSound ();
-		wintext.text = "You won in " + nroftries + " moves";
 
 		if (SceneManager.GetActiveScene ().buildIndex == 7) {
 			WinningConditionGO.SetActive (true);
 		} else {
+			wintext.text = "You won in " + nroftries + " moves";
 			nextL.gameObject.SetActive (true);
 		}
     }
@@ -127,6 +127,12 @@ public class Logic : MonoBehaviour
         {
             Application.Quit();
         }
+
+		#if UNITY_EDITOR
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			GameEnd ();
+		}
+		#endif
     }
 
     #endregion
