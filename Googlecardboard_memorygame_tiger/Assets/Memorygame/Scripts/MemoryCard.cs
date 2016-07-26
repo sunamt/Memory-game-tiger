@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 
 public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    public int CardIndex;
     public int cardnumber;
 
     public Action<MemoryCard> onSelect = (MemoryCard card) => { };

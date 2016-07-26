@@ -34,7 +34,7 @@ public class RandomCards : MonoBehaviour
         Texture2D atlasTexture = new Texture2D(2048, 2048, TextureFormat.RGB24, true, true);
         atlasTexture.wrapMode = TextureWrapMode.Clamp;
 
-        for (int i = 0; i < transform.childCount / 2; i++)
+        for (int i = 0; i < faceTexturesPack.Length; i++)
         {
             int row = i / ATLAS_TEX_COUNT;
             int column = i % ATLAS_TEX_COUNT;
@@ -106,12 +106,13 @@ public class RandomCards : MonoBehaviour
                 MeshContainer mContainer = new MeshContainer();
                 mContainer.defaultMesh = Instantiate(cardMeshes[cardList[i]]);
                 mContainer.selectedMesh = Instantiate(cardMeshes[cardList[i]]);
-
+            
                 mContainer.defaultMesh.colors32 = defaultColorsBuffer;
                 mContainer.selectedMesh.colors32 = selectedColorsBuffer;
-
+            
                 meshPool.Add(cardList[i], mContainer);
             }
+           
 
             cardsInstances[i].cardnumber = cardList[i];
             cardsInstances[i].SetCardMesh(meshPool[cardList[i]]);
