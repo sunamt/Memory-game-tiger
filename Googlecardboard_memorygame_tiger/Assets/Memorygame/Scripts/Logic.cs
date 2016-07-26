@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Logic : MonoBehaviour
 {
 	public static Logic Instance { get; private set; }
 
 	public CardboardReticle timer_rectile;
+
+	public GameObject WinningConditionGO;
 
     private MemoryCard[] cards = new MemoryCard[2];
 	public static int setsofcards;
@@ -78,7 +81,12 @@ public class Logic : MonoBehaviour
     {
 		AudioController.Instance.PlayWinningSound ();
 		wintext.text = "You won in " + nroftries + " moves";
-        nextL.gameObject.SetActive(true);
+
+		if (SceneManager.GetActiveScene ().buildIndex == 7) {
+			WinningConditionGO.SetActive (true);
+		} else {
+			nextL.gameObject.SetActive (true);
+		}
     }
 
 
