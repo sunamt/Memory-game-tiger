@@ -49,13 +49,17 @@ public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterH
 
     public void Show()
     {
-        if (!selected)
-        {
-            selected = true;
-            myAnimation.Play("Flip_show");
-			AudioController.Instance.PlayCardFlipSound ();
-            Invoke("SelectCard", 2f);
-        }
+		if (selected)
+			return;
+
+		if (Logic.Instance.timer_rectile.m_gazeTimer < Logic.Instance.timer_rectile.gazeDelay)
+			return;
+		
+       	selected = true;
+       	myAnimation.Play("Flip_show");
+		AudioController.Instance.PlayCardFlipSound ();
+       	Invoke("SelectCard", 2f);
+
     }
 
     public void Hide()

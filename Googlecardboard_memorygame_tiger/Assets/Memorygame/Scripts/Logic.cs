@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class Logic : MonoBehaviour
 {
+	public static Logic Instance { get; private set; }
+
+	public CardboardReticle timer_rectile;
 
     private MemoryCard[] cards = new MemoryCard[2];
 	public static int setsofcards;
@@ -13,11 +16,14 @@ public class Logic : MonoBehaviour
     private RevealSky revSky;
     private NewLevel nextL;
 
+
     private void Awake()
     {
         randomC = FindObjectOfType<RandomCards>();
         revSky = FindObjectOfType<RevealSky>();
         nextL = FindObjectOfType<NewLevel>();
+
+		Instance = this;
     }
 
     private void Start()
