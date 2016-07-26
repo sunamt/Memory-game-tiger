@@ -36,7 +36,10 @@ public class Logic : MonoBehaviour
         setsofcards = transform.childCount;
 
         foreach (MemoryCard card in randomC.cardsInstances)
+        {
             card.onSelect += CheckCards;
+            card.onGazeUpdate += timer_rectile.OnMemoryCardGaze;
+        }
     }
 
     public void CheckCards(MemoryCard mc)
@@ -81,7 +84,7 @@ public class Logic : MonoBehaviour
     {
 		AudioController.Instance.PlayWinningSound ();
 
-		if (SceneManager.GetActiveScene ().buildIndex == 7) {
+		if (SceneManager.GetActiveScene ().buildIndex >= 7) {
 			WinningConditionGO.SetActive (true);
 		} else {
 			wintext.text = "You won in " + nroftries + " moves";

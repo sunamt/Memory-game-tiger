@@ -8,6 +8,7 @@ public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterH
     public int cardnumber;
 
     public Action<MemoryCard> onSelect = (MemoryCard card) => { };
+    public Action<float> onGazeUpdate = (float time) => { };
 
     private bool selected = false;
 
@@ -16,13 +17,30 @@ public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterH
     private MeshFilter myFilter;
 
     private MeshContainer meshContainer;
+    private float m_gazeTimer = 0f;
+    private bool m_isGazed = false;
 
+    private float gazeDelay = 1f;
 
     private void Awake()
     {
         myAnimation = GetComponent<Animation>();
         myRenderer = GetComponent<MeshRenderer>();
         myFilter = GetComponent<MeshFilter>();
+    }
+
+    private void Update()
+    {
+        if(m_isGazed)
+        {
+            m_gazeTimer += Time.deltaTime;
+            onGazeUpdate(m_gazeTimer / gazeDelay);
+        }
+
+        if(m_gazeTimer >= gazeDelay)
+        {
+            Show();
+        }
     }
 
     public void SetCardFaceMaterial(Material material)
@@ -52,18 +70,15 @@ public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterH
 		if (selected)
 			return;
 
-		if (Logic.Instance.timer_rectile.m_gazeTimer < Logic.Instance.timer_rectile.gazeDelay)
-			return;
-		
        	selected = true;
        	myAnimation.Play("Flip_show");
 		AudioController.Instance.PlayCardFlipSound ();
        	Invoke("SelectCard", 2f);
-
     }
 
     public void Hide()
     {
+        m_gazeTimer = 0f;
         myAnimation.Play("Flip_hide");
         selected = false;
     }
@@ -81,6 +96,8 @@ public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterH
 
     public void SetGazedAt(bool gazedAt)
     {
+        m_gazeTimer = 0f;
+        m_isGazed = gazedAt;
         myFilter.sharedMesh = gazedAt ? meshContainer.selectedMesh : meshContainer.defaultMesh;
     }
 
