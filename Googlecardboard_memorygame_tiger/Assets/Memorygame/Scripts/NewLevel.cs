@@ -14,7 +14,7 @@ public class NewLevel : MonoBehaviour, ICardboardGazeResponder, IPointerEnterHan
 
     public void SetGazedAt(bool gazedAt)
     {
-        GetComponent<Text>().color = gazedAt ? Color.white : Color.green;
+		GetComponent<Text>().color = gazedAt ? Color.green : Color.white;
     }
 
     public void NextLevel()
