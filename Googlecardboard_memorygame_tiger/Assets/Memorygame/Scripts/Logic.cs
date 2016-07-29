@@ -19,6 +19,8 @@ public class Logic : MonoBehaviour
     private RandomCards randomC;
     private RevealSky revSky;
 
+	public GameObject[] referenceImages;
+
 
     private void Awake()
     {
@@ -88,6 +90,9 @@ public class Logic : MonoBehaviour
 
 		WinningConditionGO.SetActive (true);
 		wintext.text = "You won in " + nroftries + " moves";
+
+		foreach (GameObject go in referenceImages)
+			go.SetActive (false);
     }
 
 

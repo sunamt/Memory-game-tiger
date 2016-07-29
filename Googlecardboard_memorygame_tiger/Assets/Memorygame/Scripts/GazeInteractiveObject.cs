@@ -9,7 +9,7 @@ public class GazeInteractiveObject : MonoBehaviour, ICardboardGazeResponder, IPo
 
 	private float m_gazeTimer = 0f;
 	private bool m_isGazed = false;
-	private float gazeDelay = 1f;
+	private float gazeDelay = 1.5f;
 
 	protected void Update()
 	{
