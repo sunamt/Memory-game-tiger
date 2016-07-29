@@ -9,6 +9,7 @@ public class Logic : MonoBehaviour
 	public CardboardReticle timer_rectile;
 
 	public GameObject WinningConditionGO;
+	public NewLevel nextL;
 
     private MemoryCard[] cards = new MemoryCard[2];
 	public static int setsofcards;
@@ -17,14 +18,12 @@ public class Logic : MonoBehaviour
 
     private RandomCards randomC;
     private RevealSky revSky;
-    private NewLevel nextL;
 
 
     private void Awake()
     {
         randomC = FindObjectOfType<RandomCards>();
         revSky = FindObjectOfType<RevealSky>();
-        nextL = FindObjectOfType<NewLevel>();
 
 		Instance = this;
     }
@@ -32,7 +31,7 @@ public class Logic : MonoBehaviour
     private void Start()
     {
         wintext.text = "";
-        nextL.gameObject.SetActive(false);
+
         setsofcards = transform.childCount;
 
         foreach (MemoryCard card in randomC.cardsInstances)
@@ -40,6 +39,8 @@ public class Logic : MonoBehaviour
             card.onSelect += CheckCards;
             card.onGazeUpdate += timer_rectile.OnMemoryCardGaze;
         }
+
+		nextL.onGazeUpdate += timer_rectile.OnMemoryCardGaze;
     }
 
     public void CheckCards(MemoryCard mc)
@@ -84,12 +85,8 @@ public class Logic : MonoBehaviour
     {
 		AudioController.Instance.PlayWinningSound ();
 
-		if (SceneManager.GetActiveScene ().buildIndex >= 7) {
-			WinningConditionGO.SetActive (true);
-		} else {
-			wintext.text = "You won in " + nroftries + " moves";
-			nextL.gameObject.SetActive (true);
-		}
+		WinningConditionGO.SetActive (true);
+		wintext.text = "You won in " + nroftries + " moves";
     }
 
 

@@ -2,13 +2,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class MemoryCard : GazeInteractiveObject
 {
     public int cardnumber;
 
     public Action<MemoryCard> onSelect = (MemoryCard card) => { };
-    public Action<float> onGazeUpdate = (float time) => { };
-
     private bool selected = false;
 
     private MeshRenderer myRenderer;
@@ -16,30 +14,12 @@ public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterH
     private MeshFilter myFilter;
 
     private MeshContainer meshContainer;
-    private float m_gazeTimer = 0f;
-    private bool m_isGazed = false;
-
-    private float gazeDelay = 1f;
 
     private void Awake()
     {
         myAnimation = GetComponent<Animation>();
         myRenderer = GetComponent<MeshRenderer>();
         myFilter = GetComponent<MeshFilter>();
-    }
-
-    private void Update()
-    {
-        if(m_isGazed)
-        {
-            m_gazeTimer += Time.deltaTime;
-            onGazeUpdate(m_gazeTimer / gazeDelay);
-        }
-
-        if(m_gazeTimer >= gazeDelay)
-        {
-            Show();
-        }
     }
 
     public void SetCardFaceMaterial(Material material)
@@ -77,7 +57,6 @@ public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterH
 
     public void Hide()
     {
-        m_gazeTimer = 0f;
         myAnimation.Play("Flip_hide");
         selected = false;
     }
@@ -93,48 +72,22 @@ public class MemoryCard : MonoBehaviour, ICardboardGazeResponder, IPointerEnterH
         onSelect(this);
     }
 
-    public void SetGazedAt(bool gazedAt)
+	public override void OnGazeEntered()
     {
-        m_gazeTimer = 0f;
-        m_isGazed = gazedAt;
-        myFilter.sharedMesh = gazedAt ? meshContainer.selectedMesh : meshContainer.defaultMesh;
+		base.OnGazeEntered ();
+
+        myFilter.sharedMesh = meshContainer.selectedMesh;
     }
 
-    #region ICardboardGazeResponder implementation
+	public override void OnGazeExited()
+	{
+		base.OnGazeExited ();
 
-    void ICardboardGazeResponder.OnGazeEnter()
-    {
-        SetGazedAt(true);
-    }
+		myFilter.sharedMesh = meshContainer.defaultMesh;
+	}
 
-    void ICardboardGazeResponder.OnGazeExit()
-    {
-        SetGazedAt(false);
-    }
-
-    void ICardboardGazeResponder.OnGazeTrigger()
-    {
-        Show();
-    }
-
-    #endregion
-
-    #region Pointer interfaces implementation
-
-    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
-    {
-        SetGazedAt(true);
-    }
-
-    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
-    {
-        SetGazedAt(false);
-    }
-
-    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
-    {
-        Show();
-    }
-
-    #endregion
+	public override void Activate()
+	{
+		Show();
+	}
 }

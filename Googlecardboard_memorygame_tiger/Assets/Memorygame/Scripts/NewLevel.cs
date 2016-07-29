@@ -3,62 +3,38 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class NewLevel : MonoBehaviour, ICardboardGazeResponder, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class NewLevel : GazeInteractiveObject
 {
     public string levelToLoad;
+	private Text text;
+
+	private void Awake()
+	{
+		text = GetComponent<Text> ();
+	}
 
     void Start()
     {
-        SetGazedAt(false);
+		text.color = Color.white;
     }
 
-    public void SetGazedAt(bool gazedAt)
-    {
-		GetComponent<Text>().color = gazedAt ? Color.green : Color.white;
-    }
+	public override void OnGazeEntered()
+	{
+		base.OnGazeEntered ();
 
-    public void NextLevel()
+		text.color = Color.green ;
+	}
+
+	public override void OnGazeExited()
+	{
+		base.OnGazeExited ();
+
+		text.color = Color.white;
+	}		
+
+    public override void Activate()
     {
         SceneManager.LoadScene(levelToLoad);
     }
-
-
-    #region ICardboardGazeResponder implementation
-
-    void ICardboardGazeResponder.OnGazeEnter()
-    {
-        SetGazedAt(true);
-    }
-
-    void ICardboardGazeResponder.OnGazeExit()
-    {
-        SetGazedAt(false);
-    }
-
-    void ICardboardGazeResponder.OnGazeTrigger()
-    {
-        NextLevel();
-    }
-
-    #endregion
-
-    #region Pointer interfaces implementation
-
-    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
-    {
-        SetGazedAt(true);
-    }
-
-    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
-    {
-        SetGazedAt(false);
-    }
-
-    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
-    {
-        NextLevel();
-    }
-
-    #endregion
 }
 
