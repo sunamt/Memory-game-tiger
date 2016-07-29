@@ -40,7 +40,8 @@ public class Logic : MonoBehaviour
             card.onGazeUpdate += timer_rectile.OnMemoryCardGaze;
         }
 
-		nextL.onGazeUpdate += timer_rectile.OnMemoryCardGaze;
+		if(nextL !=null )
+			nextL.onGazeUpdate += timer_rectile.OnMemoryCardGaze;
     }
 
     public void CheckCards(MemoryCard mc)
