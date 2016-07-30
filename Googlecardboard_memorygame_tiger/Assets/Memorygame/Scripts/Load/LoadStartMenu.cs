@@ -5,6 +5,7 @@ public class LoadStartMenu : MonoBehaviour {
 
 	private void ShowStartMenu()
 	{
-		SceneManager.LoadScene ("start_menu");
+		//SceneManager.LoadScene ("start_menu");
+        transform.parent.gameObject.SetActive(false);
 	}
 }
