@@ -4,8 +4,6 @@ using System.Collections;
 
 public class LoadClient : MonoBehaviour {
 
-	[SerializeField]
-	private float _animationTime;
 
 	// Use this for initialization
 	void Start () {
@@ -14,8 +12,8 @@ public class LoadClient : MonoBehaviour {
 
 	private IEnumerator WaitAndLoad()
 	{
-		yield return new WaitForSeconds(_animationTime);
-		SceneManager.LoadScene ("client_Scene");
+		yield return new WaitForSeconds(5);
+		SceneManager.LoadScene ("start_menu");
 	}
 
 }
