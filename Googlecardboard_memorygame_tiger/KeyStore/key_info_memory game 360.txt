@@ -1,0 +1,10 @@
+Alias: memory360
+
+password: BecoolMem321
+
+name: Sune Amtoft
+unit: Amaligade
+organization: LiquidMedia_ZaxisGames
+city: Copenhagen
+province: sealand
+country code: 46
